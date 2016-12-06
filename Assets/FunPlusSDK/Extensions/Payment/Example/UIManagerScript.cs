@@ -7,7 +7,7 @@ public class UIManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Dictionary<string, string> data = new Dictionary<string, string> ();
+		var data = new Dictionary<string, string> ();
 		data.Add ("appid", "107");
 		data.Add ("uid", "testuser");
 		data.Add ("product_id", "product_1");
@@ -20,7 +20,7 @@ public class UIManagerScript : MonoBehaviour {
 
 		FunPlusPaymentClient.SendData (
 			PaymentEnvironment.Sandbox,
-			PaymentChannel.Google,
+			PaymentChannel.PlayStore,
 			data,
 			OnRequestSuccess,
 			OnRequestFailure

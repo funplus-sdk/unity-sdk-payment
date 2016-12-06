@@ -13,8 +13,9 @@ namespace FunPlus.Payment
 
 	public enum PaymentChannel
 	{
-		Google,
-		Apple
+		PlayStore,
+		AppStore,
+		Amazon
 	}
 
 	public class FunPlusPaymentClient : MonoBehaviour
@@ -75,11 +76,21 @@ namespace FunPlus.Payment
 				"https://payment-sandbox.funplusgame.com" :
 				"https://payment.funplusgame.com";
 
-			string channelName = channel.Equals (PaymentChannel.Google) ?
-				"googleplayiap" :
-				channel.Equals (PaymentChannel.Apple) ?
-				"appleiap" :
-				"unknown";
+			string channelName;
+
+			switch (channel) {
+			case PaymentChannel.PlayStore:
+				channelName = "googleplayiap";
+				break;
+			case PaymentChannel.AppStore:
+				channelName = "appleiap";
+				break;
+			case PaymentChannel.Amazon:
+				channelName = "amazoniap";
+				break;
+			default:
+				channelName = "unknown";
+			}
 
 			return string.Format ("{0}/callback/{1}/", host, channelName);
 		}
