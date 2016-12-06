@@ -43,11 +43,33 @@ data.Add ("currency_code", "usd");
 
 FunPlusPaymentClient.SendData (
   	PaymentEnvironment.Production,
-  	PaymentChannel.Google,
+  	PaymentChannel.PlayStore,
   	data,
   	OnRequestSuccess,
   	OnRequestFailure
 );
+```
+
+The `PaymentEnvironment` enum is defined as below.
+
+```csharp
+public enum PaymentEnvironment
+{
+	Sandbox,
+	Production
+}
+```
+
+The `PaymentChannel` enum is defined as below.
+
+```csharp
+public enum PaymentChannel
+{
+  	PlayStore,
+    AppStore,
+    Amazon,
+    // future channels
+}
 ```
 
 

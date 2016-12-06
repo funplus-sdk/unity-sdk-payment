@@ -61,11 +61,18 @@ namespace FunPlus.Payment
 			{
 				var dict = Json.Deserialize (www.text) as Dictionary<string, object>;
 
-				if (!dict.ContainsKey ("status")) {
+				if (!dict.ContainsKey ("status")) 
+				{
 					onFailure ("Invalid response: the `status` field is missing");
-				} else if ((long) dict ["status"] != 1) {
+				}
+				else if ((long)dict ["status"] != 1)
+				{
 					string reason = dict.ContainsKey ("reason") ? dict ["reason"] as string : "Unknown error";
 					onFailure (reason);
+				}
+				else
+				{
+					onSuccess ();
 				}
 			}
 		}
@@ -90,6 +97,7 @@ namespace FunPlus.Payment
 				break;
 			default:
 				channelName = "unknown";
+				break;
 			}
 
 			return string.Format ("{0}/callback/{1}/", host, channelName);
