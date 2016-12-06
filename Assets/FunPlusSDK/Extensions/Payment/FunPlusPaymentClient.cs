@@ -29,7 +29,7 @@ namespace FunPlus.Payment
 		private void SendDataToPaymentServer(PaymentEnvironment environment,
 											 PaymentChannel channel,
 											 Dictionary<string, String> data,
-											 Action<> onSuccess,
+											 Action onSuccess,
 											 Action<string> onFailure)
 		{
 			string url = GetPaymentServerUrl (environment, channel);
@@ -43,7 +43,7 @@ namespace FunPlus.Payment
 			StartCoroutine (Post (url, wf, onSuccess, onFailure));
 		}
 
-		private IEnumerator Post(string url, WWWForm wf, Action<string> onSuccess, Action<string> onFailure)
+		private IEnumerator Post(string url, WWWForm wf, Action onSuccess, Action<string> onFailure)
 		{
 			WWW www = new WWW (url, wf);
 			yield return www;
@@ -88,7 +88,7 @@ namespace FunPlus.Payment
 		public static void SendData(PaymentEnvironment environment,
 									PaymentChannel channel,
 									Dictionary<string, String> data,
-									Action<> onSuccess,
+									Action onSuccess,
 									Action<string> onFailure)
 		{
 			Instance.SendDataToPaymentServer (

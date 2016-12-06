@@ -22,7 +22,7 @@ public class UIManagerScript : MonoBehaviour {
 			PaymentEnvironment.Sandbox,
 			PaymentChannel.Google,
 			data,
-			OnRequestFailure,
+			OnRequestSuccess,
 			OnRequestFailure
 		);
 	}
