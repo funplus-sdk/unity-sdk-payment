@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 namespace FunPlus.Payment
@@ -27,26 +28,24 @@ namespace FunPlus.Payment
 
 		private void SendDataToPaymentServer(PaymentEnvironment environment,
 											 PaymentChannel channel,
-											 string appId,
-											 string userId,
-											 string productId,
-											 string signature,
-											 string signedData,
-											 string throughCargo)
+											 Dictionary<string, String> data,
+											 Action<> onSuccess,
+											 Action<string> onFailure)
 		{
 			string url = GetPaymentServerUrl (environment, channel);
 
 			WWWForm wf = new WWWForm ();
-			wf.AddField ("appid", appId);
-			wf.AddField ("uid", userId);
+			foreach (KeyValuePair<string, string> entry in data)
+			{
+				wf.AddField (entry.Key, entry.Value);
+			}
 
-			StartCoroutine (Post (url, wf, null, null));
+			StartCoroutine (Post (url, wf, onSuccess, onFailure));
 		}
 
-		private IEnumerator Post(string url, WWWForm wf, Action<Hashtable> onSuccess, Action<Hashtable> onFailure)
+		private IEnumerator Post(string url, WWWForm wf, Action<string> onSuccess, Action<string> onFailure)
 		{
 			WWW www = new WWW (url, wf);
-			Debug.Log (url);
 			yield return www;
 
 			if (www == null || www.error != null || !www.isDone)
@@ -59,7 +58,15 @@ namespace FunPlus.Payment
 			}
 			else
 			{
-				Debug.Log(www.text);
+				Debug.Log (www.text);
+				var dict = Json.Deserialize (www.text) as Dictionary<string, object>;
+
+				if (!dict.ContainsKey ("status")) {
+					onFailure ("Invalid response: the `status` field is missing");
+				} else if ((long) dict ["status"] != 1) {
+					string reason = dict.ContainsKey ("reason") ? dict ["reason"] as string : "Unknown error";
+					onFailure (reason);
+				}
 			}
 		}
 
@@ -80,22 +87,16 @@ namespace FunPlus.Payment
 
 		public static void SendData(PaymentEnvironment environment,
 									PaymentChannel channel,
-								    string appId,
-							 	    string userId,
-						   		    string productId,
-									string signature,
-									string signedData,
-									string throughCargo)
+									Dictionary<string, String> data,
+									Action<> onSuccess,
+									Action<string> onFailure)
 		{
 			Instance.SendDataToPaymentServer (
 				environment,
 				channel,
-				appId,
-				userId,
-				productId,
-				signature,
-				signedData,
-				throughCargo
+				data,
+				onSuccess,
+				onFailure
 			);
 		}
 	}
