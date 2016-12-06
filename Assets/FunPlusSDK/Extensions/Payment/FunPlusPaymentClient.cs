@@ -50,15 +50,14 @@ namespace FunPlus.Payment
 
 			if (www == null || www.error != null || !www.isDone)
 			{
-				Debug.LogWarning ("[FunPlusSDK] Failed to request to payment server.");
+				onFailure ("Failed to request to payment server");
 			}
 			else if (string.IsNullOrEmpty (www.text))
 			{
-				Debug.LogWarning ("[FunPlusSDK] Invalid response from payment server.");
+				onFailure ("Invalid response from payment server");
 			}
 			else
 			{
-				Debug.Log (www.text);
 				var dict = Json.Deserialize (www.text) as Dictionary<string, object>;
 
 				if (!dict.ContainsKey ("status")) {
