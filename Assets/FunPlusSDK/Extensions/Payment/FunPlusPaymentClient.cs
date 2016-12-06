@@ -20,6 +20,8 @@ namespace FunPlus.Payment
 
 	public class FunPlusPaymentClient : MonoBehaviour
 	{
+		public static string VERSION = "4.0.0-alpha.0";
+
 		private static FunPlusPaymentClient Instance { get; set; }
 
 		void Awake()
