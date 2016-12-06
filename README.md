@@ -33,11 +33,11 @@ void OnRequestFailure(string reason)
 var data = new Dictionary<string, string> ();
 data.Add ("appid", "107");
 data.Add ("uid", "testuser");
-data.Add ("product_id", "product_1");
-data.Add ("signature", "sig");
-data.Add ("signed_data", "signed");
-data.Add ("through_cargo", "through_cargo");
 data.Add ("appservid", "serverid");
+data.Add ("product_id", "com.funplus.gold1000");
+data.Add ("signature", "purchase signature");
+data.Add ("signed_data", "purchase signed data");
+data.Add ("through_cargo", "through_cargo");
 data.Add ("amount", "10.0");
 data.Add ("currency_code", "usd");
 
@@ -50,28 +50,26 @@ FunPlusPaymentClient.SendData (
 );
 ```
 
-The `PaymentEnvironment` enum is defined as below.
+For different channels, the `data` dictionary should contain different fields. Here's a detailed description about it.
 
-```csharp
-public enum PaymentEnvironment
-{
-	Sandbox,
-	Production
-}
-```
+**App Store**
 
-The `PaymentChannel` enum is defined as below.
+| field         | description                              |
+| ------------- | ---------------------------------------- |
+| appid         | The FunPlus Payment app ID.              |
+| uid           | User ID.                                 |
+| receipt_data  | Receipt data received from App Store.    |
+| through_cargo | A development payload, you can put here anything you want to identify current purchase. |
 
-```csharp
-public enum PaymentChannel
-{
-  	PlayStore,
-    AppStore,
-    Amazon,
-    // future channels
-}
-```
+**Play Store**
 
-
+| field         | description                              |
+| ------------- | ---------------------------------------- |
+| appid         | The FunPlus Payment app ID.              |
+| uid           | User ID.                                 |
+| product_id    | The product ID.                          |
+| signature     | Purchase signature received from Play Store. |
+| signed_data   | Purchase signed data received from Play Store. |
+| through_cargo | A development payload, you can put here anything you want to identify current purchase. |
 
 ## FAQ
